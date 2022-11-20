@@ -14,7 +14,7 @@ pipeline{
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nexus:8081"
-        NEXUS_REPOSITORY = "ejemplo-gradle"
+        NEXUS_REPOSITORY = "devops-usach-nexus"
         NEXUS_CREDENTIAL_ID = "nexus2"
     }
     stages {
