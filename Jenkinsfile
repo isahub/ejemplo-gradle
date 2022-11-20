@@ -23,7 +23,7 @@ pipeline {
         stage('Sonar') {
             steps {
                 echo 'TODO: sonar'
-                withSonarQubeEnv(credentialsId: 'tokensonarqube') {
+                withSonarQubeEnv(credentialsId: 'tokensonarqube', installationName: 'Sonita') {
                 sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build'  
                 }
             }
