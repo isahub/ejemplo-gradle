@@ -40,7 +40,9 @@ pipeline{
             when {
                 expression { params.PushToNexus }
             }
-            steps {}
+            steps {
+                sh 'echo ptn'
+            }
         }
     }
 }
