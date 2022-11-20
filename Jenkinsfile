@@ -1,44 +1,46 @@
-pipeline {
-    agent any
+def mvn_script
 
+pipeline{
+    agent any
+    tools{
+        gradle 'grdl'
+        maven 'maven'
+    }
+    parameters{
+        choice(name: 'Build_Tool', choices: ['maven', 'gradle'], description: '')
+        booleanParam(name: 'PushToNexus', defaulValue: false, description: '')
+    }
     stages {
-        stage('Build') {
-            steps {
-                echo 'TODO: build'
-                sh './mvnw clean compile -e'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'TODO: test'
-                sh './mvnw clean test -e'
-            }
-        }
-        stage('Package') {
-            steps {
-                echo 'TODO: package'
-                sh './mvnw clean package -e'           
-            }
-        }           
-        stage('Sonar') {
-            steps {
-                echo 'TODO: sonar'
-                withSonarQubeEnv(credentialsId: 'tokensonarqube', installationName: 'Sonita') {
-                sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build'  
+        stage('Load_Scripts'){
+            steps{
+                script{
+                    mvn_script = load "maven.groovy"
                 }
             }
-        }            
-        stage('Run') {
+        }
+        stage('build-mvn'){
+            when {
+                expression {
+                    params.Build_Tool == 'maven'
+                }
+            }
             steps {
-                echo 'TODO: run'
-                sh 'nohup bash ./mvnw spring-boot:run &'            
+                //sh 'mvn clean install -e'
+                script{
+                    mvn_script.maven_build_test()
+                }
             }
         }
-        stage('Mexus') {
-            steps {
-                echo 'TODO: nexus'
-                nexusPublisher nexusInstanceId: 'mxs01', nexusRepositoryId: 'devops-usach-nexus', packages: []
+        stage('build-gradle'){
+            steps{
+                sh 'gradle build'
             }
+        }
+        stage('pushToNexus'){
+            when {
+                expression { params.PushToNexus }
+            }
+            steps {}
         }
     }
 }
