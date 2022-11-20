@@ -8,7 +8,7 @@ pipeline{
     }
     parameters{
         choice(name: 'Build_Tool', choices: ['maven', 'gradle'], description: '')
-        booleanParam(name: 'PushToNexus', defaulValue: false, description: '')
+        booleanParam(name: 'PushToNexus', defaultValue: false, description: '')
     }
     stages {
         stage('Load_Scripts'){
