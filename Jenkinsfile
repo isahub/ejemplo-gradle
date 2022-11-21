@@ -11,13 +11,6 @@ pipeline{
         choice(name: 'Build_Tool', choices: ['maven', 'gradle'], description: '')
         booleanParam(name: 'PushToNexus', defaultValue: true, description: '')
     }
-    /*environment {
-        NEXUS_VERSION = "nexus3"
-        NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "nexus:8081"
-        NEXUS_REPOSITORY = "devops-usach-nexus"
-        NEXUS_CREDENTIAL_ID = "nexus2"
-    }*/
     stages {
         stage('Load_Scripts'){
             steps{
@@ -87,12 +80,12 @@ pipeline{
                 }
             }
         }
-        stage('pushToNexusUpload'){
+        stage('pushToNexus-Upload'){
             when { expression { params.PushToNexus} }
             steps { script { nexusPublisher nexusInstanceId: 'mxs01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
             }    }
         }
-        stage('pushToNexusDownload'){
+        stage('pushToNexus-Download'){
             when { expression { params.PushToNexus} }
             steps {
                     script {

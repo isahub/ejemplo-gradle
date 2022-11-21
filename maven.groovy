@@ -18,9 +18,9 @@ def runTestMaven() {
     sh './mvnw spring-boot:run &'
     sh 'sleep 10'
     sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
-    //sh 'sleep 5'
-    //def response = sh(script: "echo \$(curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:8081/rest/mscovid/test?msg=testing)", returnStdout: true);   
-    //echo "status ${response}"
+    /*sh 'sleep 5'
+    def response = sh(script: "echo \$(curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:8081/rest/mscovid/test?msg=testing)", returnStdout: true);   
+    echo "status ${response}"*/
 }
 
 return this
