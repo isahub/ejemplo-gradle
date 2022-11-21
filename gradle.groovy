@@ -7,9 +7,20 @@ def sonarGradle(){
 }
 
 def runTest(){
-        sh './gradlew bootrun &'
-        sh 'sleep 5'
-        sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+        steps {
+                step {
+                        sh './gradlew bootrun &'
+                }
+                step{
+                        sh 'sleep 5'
+                }
+                step{
+                        sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+                }
+        }
+        //sh './gradlew bootrun &'
+        //sh 'sleep 5'
+        //sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
 }
 
 return this
