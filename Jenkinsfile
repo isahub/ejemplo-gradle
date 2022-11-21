@@ -8,7 +8,7 @@ pipeline{
         maven 'maven'
     }
     parameters{
-        choice(name: 'Build_Tool', choices: ['maven', 'gradle'], description: '')
+        choice(name: 'Build_Tool', choices: ['maven', 'gradle'], defaultValue: 'maven', description: '')
         booleanParam(name: 'PushToNexus', defaultValue: true, description: '')
     }
     /*environment {
@@ -52,11 +52,7 @@ pipeline{
             }
         }
         stage('sonar-maven') {
-            when {
-                expression {
-                    params.Build_Tool == 'maven'
-                }
-            }
+            when { expression { params.Build_Tool == 'maven' } }
             steps {
                 withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonita') {
                     script {
@@ -66,16 +62,28 @@ pipeline{
             }
         }
         stage('sonar-gradle') {
-            when {
-                expression {
-                    params.Build_Tool == 'gradle'
-                }
-            }
+            when { expression { params.Build_Tool == 'gradle' } }
             steps {
                 withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonita') {
                     script {
                         grd_script.sonarGradle();
                     }
+                }
+            }
+        }
+        stage('runtest-maven') {
+            when { expression { params.Build_Tool == 'maven' } }
+            steps {
+                     script {
+                        mvn_script.runTestMaven();
+                }
+            }
+        }
+        stage('runtest-gradle') {
+            when { expression { params.Build_Tool == 'gradle' } }
+            steps {
+                    script {
+                        grd_script.runTestGradle();
                 }
             }
         }
