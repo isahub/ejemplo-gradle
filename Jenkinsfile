@@ -54,7 +54,7 @@ pipeline{
         stage('sonar-maven') {
             when {
                 expression {
-                    params.Dependencies_Builder == 'maven'
+                    params.Build_Tool == 'maven'
                 }
             }
             steps {
@@ -68,7 +68,7 @@ pipeline{
         stage('sonar-gradle') {
             when {
                 expression {
-                    params.Dependencies_Builder == 'gradle'
+                    params.Build_Tool == 'gradle'
                 }
             }
             steps {
@@ -81,8 +81,8 @@ pipeline{
         }
         stage('pushToNexus'){
             when {
-                /*expression { */ params.PushToNexus /*}*/
-                params.Dependencies_Builder == 'maven' 
+                expression { params.PushToNexus}
+                expression { params.Build_Tool == 'maven'}
             }
             steps {
                 script {
