@@ -48,12 +48,12 @@ pipeline{
                 expression { params.PushToNexus }
             }
             steps {
-                /*script {
+                script {
                     nexusPublisher nexusInstanceId: 'mxs01', 
                     nexusRepositoryId: 'devops-usach-nexus', 
                     packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
-                }*/
-                script {
+                }
+                /*script {
                     pom = readMavenPom file: "./pom.xml";
                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
                     echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
@@ -83,7 +83,7 @@ pipeline{
                     } else {
                         error "*** File: ${artifactPath}, could not be found";
                     }
-                }
+                }*/
             }
         }
     }
