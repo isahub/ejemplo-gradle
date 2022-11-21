@@ -60,7 +60,7 @@ pipeline{
             steps {
                 withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonita') {
                     script {
-                        maven_script.sonarMaven();
+                        mvn_script.sonarMaven();
                     }
                 }
             }
@@ -74,7 +74,7 @@ pipeline{
             steps {
                 withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonita') {
                     script {
-                        gradle_script.sonarGradle();
+                        grd_script.sonarGradle();
                     }
                 }
             }
