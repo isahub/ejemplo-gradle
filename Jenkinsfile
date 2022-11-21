@@ -4,7 +4,7 @@ def grd_script
 pipeline{
     agent any
     tools{
-        gradle 'grdl'
+        gradle 'gradle'
         maven 'maven'
     }
     parameters{
@@ -39,21 +39,21 @@ pipeline{
                 }
             }
         }
-        /*stage('build-gradle'){
+        stage('build-gradle'){
             when {
                 expression {
-                    params.Build_Tool == 'maven'
+                    params.Build_Tool == 'gradle'
                 }
             }
             steps {
                 script{
-                    mvn_script.maven_build_test()
+                    grd_script.buildGradle()
                 }
             }
-        }*/
+        }
         stage('build-gradle'){
             steps{
-                sh './gradle build'
+                sh './gradlew build'
             }
         }
         stage('pushToNexus'){
