@@ -81,7 +81,8 @@ pipeline{
         }
         stage('pushToNexus'){
             when {
-                expression { params.PushToNexus && params.Dependencies_Builder == 'maven' }
+                expression { params.PushToNexus}
+                expression { params.Dependencies_Builder == 'maven' }
             }
             steps {
                 script {
