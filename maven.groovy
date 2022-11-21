@@ -4,10 +4,20 @@ def maven_build_test() {
 }
 
 def maven_completo() {
-    sh './mvnw clean compile -e'
+    steps{
+        step{
+            sh './mvnw clean compile -e'
+        }
+        step{
+            sh './mvnw clean test -e'
+            sh './mvnw clean package -e'           
+            sh 'nohup bash ./mvnw spring-boot:run &'    
+        }
+    }
+    /*sh './mvnw clean compile -e'
     sh './mvnw clean test -e'
     sh './mvnw clean package -e'           
-    sh 'nohup bash ./mvnw spring-boot:run &'            
+    sh 'nohup bash ./mvnw spring-boot:run &'     */       
 }
 
 return this
