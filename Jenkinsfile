@@ -1,27 +1,29 @@
 def mvn_script
+def grd_script
 
 pipeline{
     agent any
     tools{
-        gradle 'grdl'
+        gradle 'gradle'
         maven 'maven'
     }
     parameters{
         choice(name: 'Build_Tool', choices: ['maven', 'gradle'], description: '')
         booleanParam(name: 'PushToNexus', defaultValue: false, description: '')
     }
-    environment {
+    /*environment {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nexus:8081"
         NEXUS_REPOSITORY = "devops-usach-nexus"
         NEXUS_CREDENTIAL_ID = "nexus2"
-    }
+    }*/
     stages {
         stage('Load_Scripts'){
             steps{
                 script{
                     mvn_script = load "maven.groovy"
+                    grd_script = load "gradle.groovy"
                 }
             }
         }
@@ -32,12 +34,23 @@ pipeline{
                 }
             }
             steps {
-                //sh 'mvn clean install -e'
                 script{
                     mvn_script.maven_build_test()
                 }
             }
         }
+        /*stage('build-gradle'){
+            when {
+                expression {
+                    params.Build_Tool == 'maven'
+                }
+            }
+            steps {
+                script{
+                    mvn_script.maven_build_test()
+                }
+            }
+        }*/
         stage('build-gradle'){
             steps{
                 sh 'gradle build'
@@ -49,9 +62,7 @@ pipeline{
             }
             steps {
                 script {
-                    nexusPublisher nexusInstanceId: 'mxs01', 
-                    nexusRepositoryId: 'devops-usach-nexus', 
-                    packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
+                   nexusPublisher nexusInstanceId: 'mxs01', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
                 }
                 /*script {
                     pom = readMavenPom file: "./pom.xml";
