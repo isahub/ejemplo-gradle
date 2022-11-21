@@ -9,7 +9,7 @@ pipeline{
     }
     parameters{
         choice(name: 'Build_Tool', choices: ['maven', 'gradle'], description: '')
-        booleanParam(name: 'PushToNexus', defaultValue: false, description: '')
+        booleanParam(name: 'PushToNexus', defaultValue: true, description: '')
     }
     /*environment {
         NEXUS_VERSION = "nexus3"
@@ -27,7 +27,7 @@ pipeline{
                 }
             }
         }
-        stage('build-mvn'){
+        stage('build-maven'){
             when {
                 expression {
                     params.Build_Tool == 'maven'
@@ -35,7 +35,7 @@ pipeline{
             }
             steps {
                 script{
-                    mvn_script.maven_completo()
+                    mvn_script.buildMaven()
                 }
             }
         }
@@ -51,19 +51,37 @@ pipeline{
                 }
             }
         }
-        stage('build-gradle2'){
+        stage('sonar-maven') {
             when {
                 expression {
-                    params.Build_Tool == 'none'
+                    params.Dependencies_Builder == 'maven'
                 }
-            }            
-            steps{
-                sh './gradlew build'
+            }
+            steps {
+                withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonita') {
+                    script {
+                        maven_script.sonarMaven();
+                    }
+                }
+            }
+        }
+        stage('sonar-gradle') {
+            when {
+                expression {
+                    params.Dependencies_Builder == 'gradle'
+                }
+            }
+            steps {
+                withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonita') {
+                    script {
+                        gradle_script.sonarGradle();
+                    }
+                }
             }
         }
         stage('pushToNexus'){
             when {
-                expression { params.PushToNexus }
+                expression { params.PushToNexus && params.Dependencies_Builder == 'maven' }
             }
             steps {
                 script {

@@ -3,10 +3,10 @@ def buildGradle(){
 }
 
 def sonarGradle(){
-        sh './gradlew sonarqube -Dsonar.projectKey=ejemplo-gradle -Dsonar.projectName=ejemplo-gradle -Dsonar.java.binaries=build'
+        sh './gradlew sonarqube -Dsonar.projectKey=ejemplo-gradle -Dsonar.projectName=ejemplo-gradle' // -Dsonar.java.binaries=build'
 }
 
-def runTest(){
+def runTestGradle(){
         sh './gradlew bootrun &'
         sh 'sleep 5'
         sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
