@@ -35,11 +35,11 @@ pipeline{
             }
             steps {
                 script{
-                    mvn_script.maven_build_test()
+                    mvn_script.maven_completo()
                 }
             }
         }
-        stage('build-gradle2'){
+        stage('build-gradle'){
             when {
                 expression {
                     params.Build_Tool == 'gradle'
@@ -51,8 +51,12 @@ pipeline{
                 }
             }
         }
-        stage('build-gradle'){
-            steps{
+        stage('build-gradle2'){
+            when {
+                expression {
+                    params.Build_Tool == 'none'
+                }
+            }            steps{
                 sh './gradlew build'
             }
         }
