@@ -56,7 +56,8 @@ pipeline{
                 expression {
                     params.Build_Tool == 'none'
                 }
-            }            steps{
+            }            
+            steps{
                 sh './gradlew build'
             }
         }
