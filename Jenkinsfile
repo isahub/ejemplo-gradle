@@ -8,7 +8,7 @@ pipeline{
         maven 'maven'
     }
     parameters{
-        choice(name: 'Build_Tool', choices: ['maven', 'gradle'], defaultValue: 'maven', description: '')
+        choice(name: 'Build_Tool', choices: ['maven', 'gradle'], description: '')
         booleanParam(name: 'PushToNexus', defaultValue: true, description: '')
     }
     /*environment {
