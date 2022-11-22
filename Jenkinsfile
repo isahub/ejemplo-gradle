@@ -94,5 +94,10 @@ pipeline{
                 }
             }
         }
+        stage('notif-Slack'){
+            steps { script { slackSend channel: 'C04BV16891T'
+                slackUserIdsFromCommitters tokenCredentialId: 'slack'
+            }    }
+        }
     }
 }
