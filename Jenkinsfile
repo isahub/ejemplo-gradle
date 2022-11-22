@@ -95,7 +95,7 @@ pipeline{
             }
         }
         stage('notif-Slack'){
-            steps { script {    slackSend channel: 'C04BV16891T' message: 'fin job ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
+            steps { script {    slackSend channel: 'C04BV16891T', message: 'fin job ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
                                 slackUserIdsFromCommitters tokenCredentialId: 'slack'
             }    }
         }
